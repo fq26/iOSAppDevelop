@@ -35,11 +35,3 @@ A simple offline  photo-based blog app.
 6. helper files
     * `FuncDatabase.swift` to simulate a simple database
     * `helper_func` contains some functions repeatedly used.
-=======
-# AppDeveloper
-Credit by Feng Qi, Cornell
-
-1. project 1 Basic Calculator
-2. project 2 Graphic Calculator
-3. project 3 Graphic Calculator on iPad with simulated Database
-4. Final project: a simple offline photo-based blog app
