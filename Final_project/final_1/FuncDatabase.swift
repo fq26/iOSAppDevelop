@@ -32,7 +32,7 @@ class FuncDatabase{
     }
     
     // image description db
-    var description_db = ["When Maria is sleeping", "When Maria is lying", "Maria is so cute!", "Halloween Maria"] {
+    var description_db = ["Maria is sleeping", "When Maria is lying", "Maria is so cute!", "Halloween Maria"] {
         didSet {
             NotificationCenter.default.post(name: Notification.Name(FunctionsDBChangeNotification), object: self)
         }

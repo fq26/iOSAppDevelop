@@ -37,17 +37,3 @@ class settingTextView: UITextView {
         
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

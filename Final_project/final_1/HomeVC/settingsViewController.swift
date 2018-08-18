@@ -67,14 +67,23 @@ class settingsViewController: UIViewController,UITextViewDelegate, UIImagePicker
         profile_image.clipsToBounds = true
         
         uesr_name.text = passed_user_name
+        // add tap gesture detection
+        uesr_name.addTarget(self, action: #selector(user_name_selector), for: UIControlEvents.touchDown)
         view.addSubview(uesr_name)
         
         // genderPicker setting
+        gender.inputView = UIView()
         self.genderPicker.dataSource = self
         self.genderPicker.delegate = self
-        gender.inputView = UIView()
         genderPicker.isHidden = true
         gender.text = passed_gender
+    }
+    
+    // dismiss genderPicker if not hidden
+    @objc func user_name_selector(textField: UITextField) {
+        if !genderPicker.isHidden {
+            genderPicker.isHidden = true
+        }
     }
     
     @IBOutlet weak var btn_save: UIBarButtonItem!
@@ -100,6 +109,9 @@ class settingsViewController: UIViewController,UITextViewDelegate, UIImagePicker
     }
     
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        if !genderPicker.isHidden {
+            genderPicker.isHidden = true
+        }
         if textView.tag == 0 {
             placeholder.isHidden = true
             textView.tag = 1
@@ -118,7 +130,6 @@ class settingsViewController: UIViewController,UITextViewDelegate, UIImagePicker
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -138,16 +149,22 @@ class settingsViewController: UIViewController,UITextViewDelegate, UIImagePicker
     
     // dismiss keyboard when tapping outside testfield
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true) //This will hide the keyboard
-        genderPicker.isHidden = true
+        self.view.endEditing(true)
+        //This will hide the keyboard
+        if !genderPicker.isHidden {
+            genderPicker.isHidden = true
+        }
     }
     
-    // TODO
     // camera or photo
     @IBAction func change_profile(_ sender: Any) {
-        let alertController = UIAlertController(title: "Choose Photo", message: "", preferredStyle: .alert)
+        if !genderPicker.isHidden {
+            genderPicker.isHidden = true
+        }
         
-        let okAction = UIAlertAction(title: "From Gallery", style: .default, handler: {
+        let photoSelectController = UIAlertController(title: "Choose Photo", message: "", preferredStyle: .alert)
+        
+        let fromGalleryAction = UIAlertAction(title: "From Gallery", style: .default, handler: {
             alert -> Void in
             if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
                 let imagePicker = UIImagePickerController()
@@ -157,7 +174,7 @@ class settingsViewController: UIViewController,UITextViewDelegate, UIImagePicker
             }
         })
         
-        let cancelAction = UIAlertAction(title: "Take Photo!", style: .default, handler: {
+        let takePhoneAction = UIAlertAction(title: "Take Photo!", style: .default, handler: {
             alert -> Void in
             if UIImagePickerController.isSourceTypeAvailable(.camera){
                 let imagePicker = UIImagePickerController()
@@ -167,11 +184,18 @@ class settingsViewController: UIViewController,UITextViewDelegate, UIImagePicker
             }
         })
         
-        alertController.addAction(okAction)
-        alertController.addAction(cancelAction)
-        present(alertController, animated: true, completion: nil)
+        photoSelectController.addAction(fromGalleryAction)
+        photoSelectController.addAction(takePhoneAction)
         
-
+        // dismiss photoSelectController when tap outside
+        present(photoSelectController, animated: true) {
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismiss_photoSelectController))
+            photoSelectController.view.superview?.subviews[0].addGestureRecognizer(tapGesture)
+        }
+    }
+    
+    @objc func dismiss_photoSelectController() {
+        self.dismiss(animated: true, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
@@ -190,13 +214,3 @@ class settingsViewController: UIViewController,UITextViewDelegate, UIImagePicker
         self.navigationController?.popViewController(animated: true)
     }
 }
-
-
-
-
-
-
-
-
-
-

@@ -143,7 +143,8 @@ class funcTableViewController: UITableViewController{
     // customize section header
     override func tableView(_ tableView: UITableView,
                             viewForHeaderInSection section: Int)-> UIView?{
-        if(section==0){
+        // add "Moments" title
+        if section == 0 {
             let headerView = UIView()
             let content = UILabel(frame: CGRect(x:10, y:25, width: tableView.frame.size.width, height: 50))
             content.textAlignment = .center
@@ -169,11 +170,3 @@ extension funcTableViewController: TableViewCellDelegate{
         FuncDatabase.sharedInstance.image_db.remove(at: idx!.row)
     }
 }
-
-
-
-
-
-
-
-
